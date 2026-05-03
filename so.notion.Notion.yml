@@ -1,0 +1,108 @@
+app-id: so.notion.Notion
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: notion
+separate-locales: false
+
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=dri
+  - --filesystem=home
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --env=ELECTRON_IS_DEV=0
+  - --env=ELECTRON_FORCE_IS_PACKAGED=true
+  - --env=ELECTRON_OZONE_PLATFORM_HINT=auto
+
+modules:
+  - name: 7zip
+    buildsystem: simple
+    build-only: true
+    build-commands:
+      - install -Dm755 7zzs /app/bin/7za
+    sources:
+      - type: archive
+        url: https://github.com/ip7z/7zip/releases/download/26.01/7z2601-linux-x64.tar.xz
+        sha256: 8ea0fc8a135e7b848e80a4116fe22dff56c8c4518dde1f43cce67f4e340b437a
+        strip-components: 0
+
+  - name: notion
+    buildsystem: simple
+    build-commands:
+      # Extract Notion Windows installer
+      - 7za x "Notion Setup 7.12.0.exe" '$PLUGINSDIR/app-64.7z' -y -bse0 -bso0 || true
+      - 7za x '$PLUGINSDIR/app-64.7z' resources/app.asar resources/app.asar.unpacked -y -bse0 -bso0 || true
+
+      # Extract asar contents
+      - python3 asar-tool.py e resources/app.asar asar_patched
+
+      # Replace native modules with Linux builds
+      - install -Dm644 build/Release/better_sqlite3.node asar_patched/node_modules/better-sqlite3/build/Release/better_sqlite3.node
+      - install -Dm644 linux-x64/bufferutil.node asar_patched/node_modules/bufferutil/build/Release/bufferutil.node
+
+      # Add tray icon
+      - install -Dm644 notion.png asar_patched/.webpack/main/trayIcon.png
+
+      # Apply all JS patches
+      - bash patch-notion.sh asar_patched/.webpack/main/index.js
+
+      # Repack asar (native .node files go to app.asar.unpacked)
+      - python3 asar-tool.py p asar_patched app.asar --unpack '*.node'
+
+      # Install bundled Electron
+      - install -d /app/lib/notion
+      - unzip -q electron-v40.9.3-linux-x64.zip -d /app/lib/notion
+
+      # Install app into Electron's resources directory
+      - cp app.asar /app/lib/notion/resources/
+      - cp -r app.asar.unpacked /app/lib/notion/resources/
+      - install -Dm644 asar_patched/package.json /app/lib/notion/resources/package.json
+
+      # Install launcher, desktop entry, icon, and metainfo
+      - install -Dm755 notion.sh /app/bin/notion
+      - install -Dm644 so.notion.Notion.desktop /app/share/applications/so.notion.Notion.desktop
+      - install -Dm644 notion.png /app/share/icons/hicolor/256x256/apps/so.notion.Notion.png
+      - install -Dm644 so.notion.Notion.metainfo.xml /app/share/metainfo/so.notion.Notion.metainfo.xml
+
+    sources:
+      - type: file
+        url: https://desktop-release.notion-static.com/Notion%20Setup%207.12.0.exe
+        sha256: 1624a4d131142efe902e182fedb03908e427bc3a2bc3073b3188ed1a187c98b3
+        dest-filename: Notion Setup 7.12.0.exe
+
+      - type: archive
+        url: https://github.com/WiseLibs/better-sqlite3/releases/download/v12.9.0/better-sqlite3-v12.9.0-electron-v143-linux-x64.tar.gz
+        sha256: ebc8c2a8b71ec46c67ace20b0a291058d603a93aaf17c8fd25b63ee05a129e04
+        strip-components: 0
+
+      - type: archive
+        url: https://github.com/websockets/bufferutil/releases/download/v4.0.9/v4.0.9-linux-x64.tar
+        sha256: 2139aae79c5a4fd4d07467bd9b7872ea109483aa43b3dfd6c8d3725ccba009be
+        strip-components: 0
+
+      - type: file
+        url: https://github.com/electron/electron/releases/download/v40.9.3/electron-v40.9.3-linux-x64.zip
+        sha256: 2b5e33327bd5e180b3c1c0ec429fa06769ee96c0f956a35471b9409b51f45ada
+
+      - type: file
+        path: notion.png
+
+      - type: file
+        path: notion.sh
+
+      - type: file
+        path: patch-notion.sh
+
+      - type: file
+        path: asar-tool.py
+
+      - type: file
+        path: so.notion.Notion.desktop
+
+      - type: file
+        path: so.notion.Notion.metainfo.xml

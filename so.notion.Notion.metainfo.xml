@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component type="desktop-application">
+  <id>so.notion.Notion</id>
+  <name>Notion</name>
+  <summary>Your connected workspace for wiki, docs &amp; projects</summary>
+  <summary xml:lang="de">
+    Dein vernetzter Arbeitsbereich für Wikis, Dokumente &amp; Projekte
+  </summary>
+  <description>
+    <p>
+      Notion is an all-in-one workspace for notes, tasks, wikis, and databases.
+      It lets you build custom workflows for your team or personal use.
+    </p>
+    <p xml:lang="de">
+      Notion ist ein All-in-One-Arbeitsbereich für Notizen, Aufgaben, Wikis und Datenbanken.
+      Es ermöglicht dir, benutzerdefinierte Workflows für dein Team oder den persönlichen Gebrauch zu erstellen.
+    </p>
+  </description>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <url type="homepage">https://www.notion.so</url>
+  <icon type="stock">so.notion.Notion</icon>
+  <launchable type="desktop-id">so.notion.Notion.desktop</launchable>
+  <categories>
+    <category>Office</category>
+  </categories>
+  <keywords>
+    <keyword>notion</keyword>
+    <keyword>notes</keyword>
+    <keyword>wiki</keyword>
+    <keyword>docs</keyword>
+    <keyword>productivity</keyword>
+  </keywords>
+  <releases>
+    <release version="7.12.0" date="2025-01-01" />
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>
