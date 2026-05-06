@@ -1,6 +1,6 @@
 app-id: so.notion.Notion
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: "24.08"
 sdk: org.freedesktop.Sdk
 command: notion
 separate-locales: false
@@ -35,7 +35,7 @@ modules:
     buildsystem: simple
     build-commands:
       # Extract Notion Windows installer
-      - 7za x "Notion Setup 7.14.0.exe" '$PLUGINSDIR/app-64.7z' -y -bse0 -bso0 || true
+      - 7za x "Notion Setup 7.16.0.exe" '$PLUGINSDIR/app-64.7z' -y -bse0 -bso0 || true
       - 7za x '$PLUGINSDIR/app-64.7z' resources/app.asar resources/app.asar.unpacked -y -bse0 -bso0 || true
 
       # Extract asar contents
@@ -71,9 +71,9 @@ modules:
 
     sources:
       - type: file
-        url: https://desktop-release.notion-static.com/Notion%20Setup%207.14.0.exe
-        sha256: 5b36e13566332c20b1108f2d04aef94ccd697e83d662ee4a8c7aa7f1613594c8
-        dest-filename: Notion Setup 7.14.0.exe
+        url: https://desktop-release.notion-static.com/Notion%20Setup%207.16.0.exe
+        sha256: 26ceb03e6e4b97ae2de53f8cfee1e212f5b02a9ad30a91ef3764c89f87641845
+        dest-filename: Notion Setup 7.16.0.exe
 
       - type: archive
         url: https://github.com/WiseLibs/better-sqlite3/releases/download/v12.9.0/better-sqlite3-v12.9.0-electron-v143-linux-x64.tar.gz

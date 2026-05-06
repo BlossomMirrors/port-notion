@@ -33,11 +33,12 @@
   </keywords>
   <screenshots>
     <screenshot type="default">
-      <image>https://git.blossomos.org/BlossomPorts/notion/raw/branch/main/screenshot.png</image>
+      <image
+            >https://git.blossomos.org/BlossomPorts/notion/raw/branch/main/screenshot.png</image>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="7.14.0" date="2026-05-03" />
+    <release version="7.16.0" date="2026-05-06" />
   </releases>
   <content_rating type="oars-1.1" />
 </component>
