@@ -35,7 +35,7 @@ modules:
     buildsystem: simple
     build-commands:
       # Extract Notion Windows installer
-      - 7za x "Notion Setup 7.16.0.exe" '$PLUGINSDIR/app-64.7z' -y -bse0 -bso0 || true
+      - 7za x "Notion Setup 7.17.0.exe" '$PLUGINSDIR/app-64.7z' -y -bse0 -bso0 || true
       - 7za x '$PLUGINSDIR/app-64.7z' resources/app.asar resources/app.asar.unpacked -y -bse0 -bso0 || true
 
       # Extract asar contents
@@ -71,9 +71,9 @@ modules:
 
     sources:
       - type: file
-        url: https://desktop-release.notion-static.com/Notion%20Setup%207.16.0.exe
-        sha256: 26ceb03e6e4b97ae2de53f8cfee1e212f5b02a9ad30a91ef3764c89f87641845
-        dest-filename: Notion Setup 7.16.0.exe
+        url: https://desktop-release.notion-static.com/Notion%20Setup%207.17.0.exe
+        sha256: 15b1042d4bbd9565d609110e48ddfc8be273804bf49cab7c7d20fd21ba3c8ccb
+        dest-filename: Notion Setup 7.17.0.exe
 
       - type: archive
         url: https://github.com/WiseLibs/better-sqlite3/releases/download/v12.9.0/better-sqlite3-v12.9.0-electron-v143-linux-x64.tar.gz
